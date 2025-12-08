@@ -1,79 +1,34 @@
-//{ Driver Code Starts
-#include<bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-class Solution
-{
-    public:
-    //Function to find the next greater element for each element of the array.
-    vector<long long> nextLargerElement(vector<long long> arr, int n){
+class Solution {
+  public:
+    vector<int> nextLargerElement(vector<int>& arr) {
+        // code here
+        //[1,3,2,4]
+        //3 4 4 -1
+      
+        int n=arr.size();
+        vector<int>ans(n,-1);
         
+        ///brute force approach
+        // for(int i=0;i<n;i++){
+        //     for(int j=i+1;j<n;j++){
+        //         if(arr[j] > arr[i]){
+        //             ans[i]=arr[j];
+        //             break;
+        //         }
+        //     }
+        // }
         
-        stack<long long>s;  
-        vector<long long>ans(n);
-        
-        for(int i=n-1;i>=0;i--){
-            
-            //if stack is empty
-            if(s.empty())
-             ans[i]=-1;
-            
-            else if(s.size()>0 && s.top()>arr[i])
-            {
-                ///agar stack pe bada element mil jaye
-                ans[i] = s.top();
+        //optimsed one
+        stack<int>st;
+        for(int i=0;i<n;i++){
+            while(!st.empty() && arr[i] > arr[st.top()]){
+                ans[st.top()]=arr[i];
+                st.pop();
             }
-            else if(s.size() > 0 && s.top()<=arr[i])
-            {
-                //jab stack ka top chota ho 
-                while(s.size()>0 && s.top()<=arr[i])
-                {
-                    s.pop();
-                }
-                
-                if(s.size()==0)
-                {
-                ans[i]=-1;
-                }
-                else
-                {
-                  // 4 insert ho jayega index1 pe
-                ans[i]=s.top();
-                }
-            }
-            
-            s.push(arr[i]);
+            st.push(i);
         }
-    
         
         
-        return ans;
+        return ans; 
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main()
-{
-    int t;
-    cin>>t;
-    while(t--)
-    {
-        
-        int n;
-        cin>>n;
-        vector<long long> arr(n);
-        for(int i=0;i<n;i++)
-            cin>>arr[i];
-        
-        Solution obj;
-        vector <long long> res = obj.nextLargerElement(arr, n);
-        for (long long i : res) cout << i << " ";
-        cout<<endl;
-    }
-	return 0;
-}
-// } Driver Code Ends
